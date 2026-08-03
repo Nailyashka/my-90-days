@@ -1,0 +1,2484 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>My 90 Days</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --pink: #FFB6C1;
+            --lavender: #F0E6FF;
+            --cream: #FFFDF7;
+            --white: #FFFFFF;
+            --text: #4A3A4A;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --radius: 14px;
+        }
+
+        body {
+            font-family: -apple-system, 'Segoe UI', sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            padding: 8px;
+            padding-bottom: 60px;
+            font-size: 13px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 4px 0 10px;
+        }
+        .header h1 {
+            font-size: 20px;
+            background: linear-gradient(135deg, var(--pink), #D4A0E0);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header .subtitle {
+            font-size: 11px;
+            color: #888;
+        }
+
+        .status-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+            text-align: center;
+            background: var(--lavender);
+            border-radius: var(--radius);
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        .status-item .label {
+            font-size: 8px;
+            text-transform: uppercase;
+            color: #888;
+        }
+        .status-item .value {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .pet-section {
+            text-align: center;
+            padding: 14px;
+            background: linear-gradient(135deg, #FFF5F7, var(--lavender));
+            border-radius: var(--radius);
+            margin-bottom: 10px;
+        }
+        .pet-avatar {
+            font-size: 44px;
+            display: block;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .pet-avatar:active {
+            transform: scale(0.9);
+        }
+        .pet-name {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .pet-mood {
+            font-size: 13px;
+            color: #777;
+        }
+        .pet-stats {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+        .pet-stat {
+            font-size: 11px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 2px 8px;
+            border-radius: 14px;
+        }
+        .pet-xp-bar {
+            max-width: 200px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 10px;
+            margin: 6px auto 0;
+            overflow: hidden;
+        }
+        .pet-xp-bar .fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--pink), #D4A0E0);
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+
+        .assistant-card {
+            background: linear-gradient(135deg, #FFF5F7, #F0E6FF);
+            border: 2px solid var(--pink);
+            border-radius: var(--radius);
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+        .assistant-message {
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        .assistant-message .highlight {
+            font-weight: 700;
+            color: #D4A0E0;
+        }
+        .assistant-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4px;
+            margin-top: 6px;
+        }
+        .assistant-stat {
+            text-align: center;
+            padding: 6px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 8px;
+        }
+        .assistant-stat .number {
+            font-size: 15px;
+            font-weight: 700;
+        }
+        .assistant-stat .label {
+            font-size: 8px;
+            color: #888;
+        }
+
+        .calorie-bar {
+            height: 5px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 10px;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+        .calorie-bar .fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+        .calorie-bar .fill.safe {
+            background: #6BCB9A;
+        }
+        .calorie-bar .fill.warning {
+            background: #FFD93D;
+        }
+        .calorie-bar .fill.danger {
+            background: #FF6B6B;
+        }
+
+        .btn {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            touch-action: manipulation;
+        }
+        .btn:active {
+            transform: scale(0.95);
+        }
+        .btn-primary {
+            background: var(--pink);
+            color: #4A3A4A;
+        }
+        .btn-success {
+            background: #A8E6CF;
+            color: #2D5A4A;
+        }
+        .btn-danger {
+            background: #FFB3B3;
+            color: #7A3A3A;
+        }
+        .btn-purple {
+            background: #D4A0E0;
+            color: #4A2A5A;
+        }
+        .btn-gold {
+            background: #FFD700;
+            color: #7A6A00;
+        }
+
+        .form-group {
+            margin-bottom: 6px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 10px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 6px 8px;
+            border: 2px solid #EEE;
+            border-radius: 8px;
+            font-size: 12px;
+            font-family: inherit;
+            background: var(--cream);
+            appearance: none;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--pink);
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 2px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+            position: sticky;
+            top: 0;
+            background: var(--cream);
+            padding: 4px 0;
+            z-index: 10;
+        }
+        .tab-btn {
+            padding: 4px 8px;
+            border: none;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            background: var(--cream);
+            color: var(--text);
+            touch-action: manipulation;
+            flex: 1;
+            min-width: 32px;
+            text-align: center;
+        }
+        .tab-btn.active {
+            background: var(--pink);
+        }
+        .tab-btn:active {
+            background: var(--lavender);
+        }
+
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 8px;
+            background: var(--cream);
+            border-radius: 8px;
+            margin-bottom: 4px;
+            border: 2px solid #F0F0F0;
+        }
+        .todo-item.done {
+            opacity: 0.6;
+            text-decoration: line-through;
+            background: #F0F8F0;
+        }
+        .todo-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--pink);
+            flex-shrink: 0;
+        }
+        .todo-item .todo-text {
+            flex: 1;
+            font-size: 12px;
+        }
+        .todo-item .todo-delete {
+            background: none;
+            border: none;
+            font-size: 14px;
+            color: #CCC;
+            padding: 0 4px;
+        }
+        .todo-add-form {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 6px;
+        }
+        .todo-add-form input {
+            flex: 1;
+            padding: 6px 8px;
+            border: 2px solid #EEE;
+            border-radius: 8px;
+            font-size: 12px;
+            background: var(--cream);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            margin-top: 4px;
+        }
+        .calendar-day {
+            aspect-ratio: 1;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: 600;
+            background: #F5F5F5;
+        }
+        .calendar-day.perfect {
+            background: #A8E6CF;
+        }
+        .calendar-day.good {
+            background: #FFD3B4;
+        }
+        .calendar-day.selfcare {
+            background: #FFB6C1;
+        }
+        .calendar-day.best {
+            background: #FFD700;
+        }
+        .calendar-day.missed {
+            background: #E8E8E8;
+            color: #999;
+        }
+        .calendar-day.empty {
+            background: transparent;
+        }
+        .calendar-day.today {
+            border: 2px solid var(--pink);
+        }
+
+        .timer-display {
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            font-family: monospace;
+            padding: 4px 0;
+        }
+        .timer-controls {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+            gap: 4px;
+        }
+        .stat-number {
+            text-align: center;
+            padding: 6px;
+            background: var(--cream);
+            border-radius: 8px;
+        }
+        .stat-number .number {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .stat-number .label {
+            font-size: 8px;
+            color: #888;
+        }
+
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 4px;
+        }
+        .achievement-item {
+            text-align: center;
+            padding: 4px;
+            border-radius: 8px;
+            background: var(--cream);
+            border: 2px solid #EEE;
+        }
+        .achievement-item.unlocked {
+            border-color: #FFD700;
+            background: #FFF8E0;
+        }
+        .achievement-item .icon {
+            font-size: 18px;
+        }
+        .achievement-item .name {
+            font-size: 8px;
+            font-weight: 600;
+        }
+
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            border-bottom: 1px solid #F0F0F0;
+            font-size: 11px;
+            flex-wrap: wrap;
+            gap: 2px;
+        }
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .text-muted {
+            color: #999;
+            font-size: 10px;
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mt-12 {
+            margin-top: 12px;
+        }
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+
+        .mission-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 8px;
+            background: var(--cream);
+            border-radius: 8px;
+            margin-bottom: 4px;
+            border: 2px solid #F0F0F0;
+        }
+        .mission-item.done {
+            opacity: 0.6;
+            text-decoration: line-through;
+            background: #F0F8F0;
+        }
+        .mission-item input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+            accent-color: var(--pink);
+            flex-shrink: 0;
+        }
+        .mission-item span {
+            font-size: 11px;
+        }
+        .mission-item .mission-delete {
+            background: none;
+            border: none;
+            font-size: 12px;
+            color: #CCC;
+            margin-left: auto;
+            padding: 0 4px;
+        }
+
+        .chest {
+            font-size: 30px;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .chest:active {
+            transform: scale(0.9);
+        }
+
+        .mood-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+        }
+        .mood-option {
+            text-align: center;
+            padding: 4px 2px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            background: var(--cream);
+        }
+        .mood-option:active {
+            transform: scale(0.95);
+        }
+        .mood-option.active {
+            border-color: var(--pink);
+            background: #FFF0F5;
+        }
+        .mood-option .emoji {
+            font-size: 20px;
+            display: block;
+        }
+        .mood-option .label {
+            font-size: 8px;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 11px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            max-width: 90%;
+            text-align: center;
+            animation: slideUp 0.3s ease;
+        }
+        .notification.success {
+            background: #2D8F6A;
+        }
+        .notification.gold {
+            background: #B8860B;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .xp-popup {
+            position: fixed;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: 700;
+            color: #D4A0E0;
+            pointer-events: none;
+            animation: xpFloat 1s ease forwards;
+            z-index: 999;
+        }
+        @keyframes xpFloat {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -80%) scale(1.2);
+            }
+        }
+
+        /* ===== ВЕС ===== */
+        .weight-track {
+            height: 10px;
+            background: #F0F0F0;
+            border-radius: 10px;
+            position: relative;
+            margin: 4px 0;
+        }
+        .weight-track .fill {
+            height: 100%;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #FF6B6B, #FFD93D, #6BCB9A);
+            transition: width 0.5s;
+        }
+        .weight-track .marker {
+            position: absolute;
+            top: -4px;
+            width: 2px;
+            height: 18px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: left 0.5s;
+        }
+        .weight-track .marker::after {
+            content: '📍';
+            position: absolute;
+            top: -14px;
+            left: -5px;
+            font-size: 10px;
+        }
+        .weight-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        .weight-info {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 6px;
+            padding: 8px;
+            background: var(--cream);
+            border-radius: 8px;
+            font-size: 11px;
+        }
+        .weight-info .big {
+            font-size: 15px;
+            font-weight: 700;
+            color: #6BCB9A;
+        }
+        .weight-info .big.red {
+            color: #FF6B6B;
+        }
+
+        .sleep-entry {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            border-bottom: 1px solid #F0F0F0;
+            font-size: 11px;
+            flex-wrap: wrap;
+            gap: 2px;
+        }
+        .sleep-entry .sleep-badge {
+            font-size: 9px;
+            padding: 1px 6px;
+            border-radius: 8px;
+            background: var(--cream);
+        }
+        .sleep-entry .sleep-badge.good {
+            background: #A8E6CF;
+            color: #2D5A4A;
+        }
+        .sleep-entry .sleep-badge.bad {
+            background: #FFB3B3;
+            color: #7A3A3A;
+        }
+
+        .photo-upload-area {
+            border: 2px dashed #DDD;
+            border-radius: 10px;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            background: var(--cream);
+        }
+        .photo-upload-area .icon {
+            font-size: 22px;
+            display: block;
+        }
+        .photo-upload-area .text {
+            color: #888;
+            font-size: 10px;
+        }
+        .food-photo {
+            width: 100%;
+            max-height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #EEE;
+        }
+
+        .meal-entry {
+            background: var(--cream);
+            border-radius: 8px;
+            padding: 8px;
+            margin-bottom: 4px;
+            border: 2px solid #F0F0F0;
+            display: flex;
+            gap: 6px;
+            align-items: flex-start;
+        }
+        .meal-entry .meal-photo {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: #F5F5F5;
+        }
+        .meal-entry .meal-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .meal-entry .meal-time {
+            font-weight: 600;
+            font-size: 10px;
+        }
+        .meal-entry .meal-name {
+            font-size: 11px;
+            font-weight: 500;
+        }
+        .meal-entry .meal-meta {
+            display: flex;
+            gap: 6px;
+            font-size: 10px;
+            color: #888;
+            flex-wrap: wrap;
+        }
+
+        .day-tabs {
+            display: flex;
+            gap: 2px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+        .day-tab {
+            padding: 3px 8px;
+            border: 2px solid #EEE;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            background: var(--cream);
+        }
+        .day-tab.active {
+            background: var(--pink);
+            border-color: var(--pink);
+        }
+
+        .food-history-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 4px;
+        }
+        .food-history-item {
+            background: var(--cream);
+            border-radius: 8px;
+            padding: 4px;
+            border: 2px solid #F0F0F0;
+            text-align: center;
+        }
+        .food-history-item img {
+            width: 100%;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 4px;
+                padding-bottom: 50px;
+            }
+            .card {
+                padding: 8px;
+                margin-bottom: 6px;
+            }
+            .status-bar {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 6px;
+            }
+            .assistant-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            .pet-avatar {
+                font-size: 36px;
+            }
+            .tabs .tab-btn {
+                font-size: 9px;
+                padding: 3px 6px;
+                min-width: 28px;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .timer-display {
+                font-size: 24px;
+            }
+            .achievement-grid {
+                grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            }
+            .meal-entry .meal-photo {
+                width: 32px;
+                height: 32px;
+            }
+            .food-history-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .weight-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            .mood-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="app">
+        <header class="header">
+            <h1>✨ My 90 Days</h1>
+            <div class="subtitle">путь к лучшей версии себя</div>
+        </header>
+
+        <div class="status-bar" id="statusBar">
+            <div class="status-item"><span class="label">До цели</span><span class="value" id="daysLeft">87</span></div>
+            <div class="status-item"><span class="label">🔥 Streak</span><span class="value" id="streakDisplay">0</span></div>
+            <div class="status-item"><span class="label">🏆 Лучший</span><span class="value" id="bestStreakDisplay">0</span></div>
+            <div class="status-item"><span class="label">🌱 Уровень</span><span class="value" id="levelDisplay">1</span></div>
+        </div>
+
+        <div class="pet-section" id="petSection">
+            <span class="pet-avatar" id="petAvatar" title="Погладить">🐣</span>
+            <div class="pet-name" id="petName">Луми</div>
+            <div class="pet-mood" id="petMood">😊</div>
+            <div class="pet-stats">
+                <span class="pet-stat">❤️ <span id="petHappiness">90</span>%</span>
+                <span class="pet-stat">⚡ <span id="petEnergy">85</span>%</span>
+                <span class="pet-stat">🎯 <span id="petLevel">1</span></span>
+            </div>
+            <div class="pet-xp-bar"><div class="fill" id="petXpBar" style="width:0%"></div></div>
+            <div class="text-muted mt-8">XP: <span id="petXpText">0</span> / <span id="petMaxXpText">500</span></div>
+        </div>
+
+        <div class="assistant-card" id="assistantCard">
+            <div class="assistant-message" id="assistantMessage">🧠 Привет!</div>
+            <div class="assistant-stats">
+                <div class="assistant-stat"><span class="number" id="assistCaloriesToday">0</span><span class="label">🔥 ккал</span></div>
+                <div class="assistant-stat"><span class="number" id="assistCaloriesLeft">700</span><span class="label">⚡ осталось</span></div>
+                <div class="assistant-stat"><span class="number" id="assistSteps">0</span><span class="label">👣 шаги</span></div>
+                <div class="assistant-stat"><span class="number" id="assistWater">0</span><span class="label">💧 мл</span></div>
+            </div>
+            <div class="calorie-bar"><div class="fill safe" id="calorieBarFill" style="width:0%"></div></div>
+            <div class="flex-between mt-8 text-muted"><span>Цель: 700 ккал</span><span id="calorieStatusLabel">✨</span></div>
+        </div>
+
+        <div class="tabs" id="tabsContainer">
+            <button class="tab-btn active" data-tab="dashboard">🏠</button>
+            <button class="tab-btn" data-tab="todo">✅</button>
+            <button class="tab-btn" data-tab="study">📚</button>
+            <button class="tab-btn" data-tab="steps">👣</button>
+            <button class="tab-btn" data-tab="sports">🚴</button>
+            <button class="tab-btn" data-tab="diet">📸</button>
+            <button class="tab-btn" data-tab="nutrition">🍎</button>
+            <button class="tab-btn" data-tab="sleep">🌙</button>
+            <button class="tab-btn" data-tab="weight">⚖️</button>
+            <button class="tab-btn" data-tab="emotions">💭</button>
+            <button class="tab-btn" data-tab="stats">📊</button>
+        </div>
+
+        <!-- ===== ГЛАВНАЯ ===== -->
+        <div class="tab-content active" id="tab-dashboard">
+            <div class="card">
+                <div class="card-title">🎯 Мои цели</div>
+                <div style="font-size:12px;">
+                    <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #EEE;">
+                        <span>👣 10 000 шагов</span>
+                        <span id="stepsProgress">0 / 10000</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #EEE;">
+                        <span>🍽 До 700 ккал</span>
+                        <span id="caloriesProgress">0 / 700</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;padding:3px 0;">
+                        <span>💧 Вода: <span id="waterGoalDisplay">2.0</span> л</span>
+                        <span id="waterProgress">0 мл</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">🎯 Миссия дня</div>
+                <div id="missionContainer"><p class="text-muted">Загрузка...</p></div>
+                <div class="text-center mt-8">
+                    <span class="chest" id="chestIcon">📦</span>
+                    <div class="text-muted" id="chestStatus">Выполни все задания!</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">📅 <span id="calendarMonth"></span></div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">🏆 Достижения</div>
+                <div class="achievement-grid" id="achievementsGrid"></div>
+            </div>
+        </div>
+
+        <!-- ===== TO-DO ===== -->
+        <div class="tab-content" id="tab-todo">
+            <div class="card">
+                <div class="card-title">📝 Планы</div>
+                <div class="todo-add-form">
+                    <input type="text" id="todoInput" placeholder="Что сделать?" maxlength="200" />
+                    <button class="btn btn-primary" id="todoAdd">➕</button>
+                </div>
+                <div id="todoList"><p class="text-muted">Нет планов</p></div>
+                <div class="flex-between mt-8 text-muted">
+                    <span>✅ <strong id="todoDoneCount">0</strong></span>
+                    <span>📋 <strong id="todoTotalCount">0</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ЕГЭ ===== -->
+        <div class="tab-content" id="tab-study">
+            <div class="card">
+                <div class="card-title">📚 ЕГЭ</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Предмет</label>
+                        <select id="studySubject">
+                            <option value="math">📐 Математика</option>
+                            <option value="russian">📖 Русский</option>
+                            <option value="informatics">💻 Информатика</option>
+                            <option value="programming">👨‍💻 Программирование</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Задач</label>
+                        <input type="number" id="studyTasks" value="0" min="0" />
+                    </div>
+                </div>
+                <div class="timer-display" id="timerDisplay">00:00:00</div>
+                <div class="timer-controls">
+                    <button class="btn btn-primary" id="timerStart">▶</button>
+                    <button class="btn btn-secondary" id="timerPause" disabled>⏸</button>
+                    <button class="btn btn-danger" id="timerStop" disabled>⏹</button>
+                </div>
+                <div class="flex-between mt-8 text-muted">
+                    <span>⏱ <strong id="studyTodayHours">0</strong> ч</span>
+                    <span>📝 <strong id="studyTodayTasks">0</strong></span>
+                    <span>🔥 XP: <strong id="studyTodayXp">0</strong></span>
+                </div>
+                <div class="text-muted mt-8">Всего: <strong id="studyTotalHours">0</strong> ч</div>
+            </div>
+        </div>
+
+        <!-- ===== ШАГИ ===== -->
+        <div class="tab-content" id="tab-steps">
+            <div class="card">
+                <div class="card-title">👣 Мои шаги</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>👣 Шагов</label>
+                        <input type="number" id="stepsCount" value="0" min="0" step="100" />
+                    </div>
+                    <div class="form-group">
+                        <label>🔥 Сожжено ккал</label>
+                        <input type="number" id="stepsCalories" value="0" min="0" />
+                    </div>
+                </div>
+                <button class="btn btn-purple" id="addSteps">💾 Сохранить</button>
+                <div class="mt-8" id="stepsHistoryList"><p class="text-muted">Нет записей</p></div>
+                <div class="stats-grid mt-8">
+                    <div class="stat-number"><div class="number" id="stepsTotal">0</div><div class="label">👣 Всего</div></div>
+                    <div class="stat-number"><div class="number" id="stepsCaloriesTotal">0</div><div class="label">🔥 ккал</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== СПОРТ ===== -->
+        <div class="tab-content" id="tab-sports">
+            <div class="card">
+                <div class="card-title">🚴 Активность</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Тип</label>
+                        <select id="sportType">
+                            <option value="bike">🚴 Велосипед</option>
+                            <option value="training">🏋️ Тренировка</option>
+                            <option value="walk">🚶 Прогулка</option>
+                            <option value="run">🏃 Бег</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Мин</label>
+                        <input type="number" id="sportDuration" value="30" min="1" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Км</label>
+                        <input type="number" id="sportDistance" value="0" min="0" step="0.5" />
+                    </div>
+                    <div class="form-group">
+                        <label>🔥 ккал</label>
+                        <input type="number" id="sportCalories" value="0" min="0" />
+                    </div>
+                </div>
+                <button class="btn btn-success" id="addSport">➕</button>
+                <div class="mt-8" id="sportHistoryList"><p class="text-muted">Нет активностей</p></div>
+                <div class="stats-grid mt-8">
+                    <div class="stat-number"><div class="number" id="sportTotalBike">0</div><div class="label">🚴 км</div></div>
+                    <div class="stat-number"><div class="number" id="sportTotalCalories">0</div><div class="label">🔥 ккал</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ДИЕТА ===== -->
+        <div class="tab-content" id="tab-diet">
+            <div class="card">
+                <div class="card-title">📸 Дневник</div>
+                <div class="day-tabs" id="dayTabs">
+                    <button class="day-tab active" data-day="monday">Пн</button>
+                    <button class="day-tab" data-day="tuesday">Вт</button>
+                    <button class="day-tab" data-day="wednesday">Ср</button>
+                    <button class="day-tab" data-day="thursday">Чт</button>
+                    <button class="day-tab" data-day="friday">Пт</button>
+                    <button class="day-tab" data-day="saturday">Сб</button>
+                    <button class="day-tab" data-day="sunday">Вс</button>
+                </div>
+                <div id="dietDayContent"></div>
+                <div style="border:2px dashed #DDD;border-radius:10px;padding:10px;margin-top:8px;">
+                    <div style="font-weight:600;font-size:12px;margin-bottom:4px;">➕ Добавить</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Приём</label>
+                            <select id="dietMealType">
+                                <option value="breakfast">🍳 Завтрак</option>
+                                <option value="lunch">🥗 Обед</option>
+                                <option value="dinner">🍲 Ужин</option>
+                                <option value="snack">🍿 Перекус</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Блюдо</label>
+                            <input type="text" id="dietMealName" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Калории</label>
+                            <input type="number" id="dietMealCalories" value="0" min="0" />
+                        </div>
+                        <div class="form-group">
+                            <label>Б/Ж/У</label>
+                            <input type="text" id="dietMealMacros" placeholder="20/15/45" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Заметка</label>
+                        <textarea id="dietMealNote" rows="1"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Фото</label>
+                        <div class="photo-upload-area" id="dietPhotoUpload">
+                            <span class="icon">📷</span>
+                            <div class="text">Нажми</div>
+                            <input type="file" id="dietPhotoInput" accept="image/*" style="display:none;" />
+                        </div>
+                        <div id="dietPhotoPreview" style="display:none;margin-top:4px;">
+                            <img id="dietPhotoPreviewImg" class="food-photo" style="max-height:80px;" />
+                            <button class="btn btn-danger" id="dietPhotoRemove" style="padding:2px 8px;font-size:9px;margin-top:4px;">✖</button>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="dietAddMeal">💾</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">📜 История</div>
+                <div id="dietHistory" class="food-history-grid"></div>
+            </div>
+        </div>
+
+        <!-- ===== ПИТАНИЕ ===== -->
+        <div class="tab-content" id="tab-nutrition">
+            <div class="card">
+                <div class="card-title">🍎 Простое питание</div>
+                <div class="form-group"><label>Завтрак</label><input type="text" id="mealBreakfast" /></div>
+                <div class="form-group"><label>Обед</label><input type="text" id="mealLunch" /></div>
+                <div class="form-group"><label>Ужин</label><input type="text" id="mealDinner" /></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Калории</label><input type="number" id="mealCalories" value="0" min="0" /></div>
+                    <div class="form-group"><label>Вода (мл)</label><input type="number" id="mealWater" value="0" min="0" step="100" /></div>
+                </div>
+                <button class="btn btn-success" id="saveMeals">💾</button>
+                <div class="mt-8"><p>Статус: <strong id="nutritionStatusText">—</strong></p></div>
+                <div id="nutritionHistoryList"></div>
+            </div>
+        </div>
+
+        <!-- ===== СОН ===== -->
+        <div class="tab-content" id="tab-sleep">
+            <div class="card">
+                <div class="card-title">🌙 Сон</div>
+                <p class="text-muted">Ложись до 23:00!</p>
+                <div class="form-row">
+                    <div class="form-group"><label>Время</label><input type="time" id="sleepTime" value="23:00" /></div>
+                    <div class="form-group"><label>Часов</label><input type="number" id="sleepHours" value="8" min="1" max="12" step="0.5" /></div>
+                </div>
+                <button class="btn btn-gold" id="addSleep">💤</button>
+                <div class="mt-8" id="sleepHistoryList"><p class="text-muted">Нет записей</p></div>
+                <div class="stats-grid mt-8">
+                    <div class="stat-number"><div class="number" id="sleepGoodDays">0</div><div class="label">🌙 До 23:00</div></div>
+                    <div class="stat-number"><div class="number" id="sleepStreak">0</div><div class="label">🔥 Серия</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ВЕС ===== -->
+        <div class="tab-content" id="tab-weight">
+            <div class="card">
+                <div class="card-title">⚖️ Вес</div>
+                <div class="form-row">
+                    <div class="form-group"><label>Текущий (кг)</label><input type="number" id="weightCurrent" value="63" step="0.5" /></div>
+                    <div class="form-group"><label>Цель (кг)</label><input type="number" id="weightGoal" value="55" step="0.5" /></div>
+                </div>
+                <button class="btn btn-success" id="saveWeight">💾</button>
+                <div class="weight-scale">
+                    <div class="weight-labels"><span id="weightStartLabel">63</span><span id="weightGoalLabel">55</span></div>
+                    <div class="weight-track"><div class="fill" id="weightFill" style="width:0%"></div><div class="marker" id="weightMarker" style="left:0%"></div></div>
+                    <div class="weight-info">
+                        <div>Осталось: <span class="big" id="weightLeft">8 кг</span></div>
+                        <div>Прогресс: <span class="big" id="weightPercent">0%</span></div>
+                        <div>Дней: <span class="big" id="weightDays">0</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ЭМОЦИИ ===== -->
+        <div class="tab-content" id="tab-emotions">
+            <div class="card">
+                <div class="card-title">💭 Эмоции</div>
+                <div class="mood-grid" id="moodGrid">
+                    <div class="mood-option" data-mood="great"><span class="emoji">😊</span><span class="label">Отл</span></div>
+                    <div class="mood-option" data-mood="normal"><span class="emoji">🙂</span><span class="label">Норм</span></div>
+                    <div class="mood-option" data-mood="sad"><span class="emoji">😔</span><span class="label">Груст</span></div>
+                    <div class="mood-option" data-mood="tired"><span class="emoji">😫</span><span class="label">Устал</span></div>
+                    <div class="mood-option" data-mood="proud"><span class="emoji">🔥</span><span class="label">Горд</span></div>
+                </div>
+                <div class="form-group mt-8"><label>Заметка</label><textarea id="moodNote" rows="1"></textarea></div>
+                <button class="btn btn-primary" id="saveMood">💾</button>
+                <div class="mt-8" id="moodStatsGrid" class="stats-grid"></div>
+            </div>
+        </div>
+
+        <!-- ===== СТАТИСТИКА ===== -->
+        <div class="tab-content" id="tab-stats">
+            <div class="card">
+                <div class="card-title">📊 Статистика</div>
+                <div class="stats-grid" id="bigStats">
+                    <div class="stat-number"><div class="number" id="statStreak">0</div><div class="label">🔥 Streak</div></div>
+                    <div class="stat-number"><div class="number" id="statStudyHours">0</div><div class="label">📚 Часов</div></div>
+                    <div class="stat-number"><div class="number" id="statTasks">0</div><div class="label">🧮 Задач</div></div>
+                    <div class="stat-number"><div class="number" id="statBike">0</div><div class="label">🚴 км</div></div>
+                    <div class="stat-number"><div class="number" id="statXp">0</div><div class="label">⭐ XP</div></div>
+                    <div class="stat-number"><div class="number" id="statStepsTotal">0</div><div class="label">👣 Шаги</div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center text-muted" style="padding:10px 0;">❤️ Луми всегда рядом!</div>
+    </div>
+
+    <script>
+        // ============================================================
+        //  УПРОЩЁННЫЙ DATA MANAGER
+        // ============================================================
+        const DataManager = {
+            getDefaultData() {
+                const today = new Date().toISOString().split('T')[0];
+                const weekDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+                const diet = {};
+                weekDays.forEach(day => { diet[day] = []; });
+
+                return {
+                    pet: { name: 'Луми', level: 1, xp: 0, energy: 85, happiness: 90 },
+                    streak: { current: 0, best: 0, lastDate: null, totalProductiveDays: 0 },
+                    calendar: {},
+                    study: {
+                        totalHours: 0, tasksSolved: 0, sessions: [],
+                        todayTimer: { isRunning: false, startTime: null, pausedTime: null, totalSeconds: 0 },
+                        todayXp: 0, todayTasks: 0,
+                        subjects: { math: { hours: 0, tasks: 0 }, russian: { hours: 0, tasks: 0 },
+                            informatics: { hours: 0, tasks: 0 }, programming: { hours: 0, tasks: 0 } }
+                    },
+                    sports: { total: { bikeKm: 0, trainingHours: 0, calories: 0, steps: 0 }, history: [] },
+                    steps: { history: [], totalSteps: 0, totalCalories: 0 },
+                    nutrition: { today: { breakfast: '', lunch: '', dinner: '', calories: 0, water: 0 }, history: [] },
+                    diet: { entries: diet, allHistory: [] },
+                    emotions: { entries: [], stats: { great: 0, normal: 0, sad: 0, tired: 0, proud: 0 } },
+                    missions: { date: null, tasks: [], chestOpened: false },
+                    achievements: { unlocked: [] },
+                    todo: {},
+                    sleep: { history: [], streak: 0, goodDays: 0 },
+                    weight: { current: 63, goal: 55, lastUpdate: null },
+                    createdAt: today,
+                    settings: { dailyCalorieGoal: 700, waterGoal: 2000, stepsGoal: 10000 }
+                };
+            },
+
+            get() {
+                const raw = localStorage.getItem('my90Days');
+                if (raw) {
+                    try {
+                        const data = JSON.parse(raw);
+                        if (!data.study.subjects) {
+                            data.study.subjects = { math: { hours: 0, tasks: 0 }, russian: { hours: 0, tasks: 0 },
+                                informatics: { hours: 0, tasks: 0 }, programming: { hours: 0, tasks: 0 } };
+                        }
+                        if (!data.todo) data.todo = {};
+                        if (!data.settings) data.settings = { dailyCalorieGoal: 700, waterGoal: 2000, stepsGoal: 10000 };
+                        if (!data.missions) data.missions = { date: null, tasks: [], chestOpened: false };
+                        if (!data.sleep) data.sleep = { history: [], streak: 0, goodDays: 0 };
+                        if (!data.weight) data.weight = { current: 63, goal: 55, lastUpdate: null };
+                        if (!data.steps) data.steps = { history: [], totalSteps: 0, totalCalories: 0 };
+                        this._checkDay(data);
+                        return data;
+                    } catch (e) {
+                        return this.reset();
+                    }
+                }
+                return this.reset();
+            },
+
+            reset() { const data = this.getDefaultData();
+                this.save(data); return data; },
+            save(data) { localStorage.setItem('my90Days', JSON.stringify(data)); },
+
+            _checkDay(data) {
+                const today = new Date().toISOString().split('T')[0];
+                const lastDate = data.streak.lastDate;
+                if (lastDate && lastDate !== today) {
+                    const yesterday = new Date();
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    const yesterdayStr = yesterday.toISOString().split('T')[0];
+                    if (lastDate !== yesterdayStr) {
+                        if (data.streak.current > 0) {
+                            data.streak.current = 0;
+                            if (!data.calendar[lastDate]) data.calendar[lastDate] = 'missed';
+                        }
+                    }
+                    data.nutrition.today = { breakfast: '', lunch: '', dinner: '', calories: 0, water: 0 };
+                    data.study.todayTimer = { isRunning: false, startTime: null, pausedTime: null, totalSeconds: 0 };
+                    data.study.todayXp = 0;
+                    data.study.todayTasks = 0;
+                }
+                if (!data.streak.lastDate) data.streak.lastDate = today;
+                if (data.missions.date !== today) {
+                    data.missions.date = today;
+                    data.missions.tasks = [];
+                    data.missions.chestOpened = false;
+                }
+                if (!data.todo[today]) data.todo[today] = [];
+                this.save(data);
+            }
+        };
+
+        // ============================================================
+        //  ОСНОВНОЕ ПРИЛОЖЕНИЕ
+        // ============================================================
+        const App = {
+            data: null,
+            calorieGoal: 700,
+            stepsGoal: 10000,
+            waterGoal: 2000,
+
+            init() {
+                this.data = DataManager.get();
+                this.calorieGoal = this.data.settings.dailyCalorieGoal || 700;
+                this.stepsGoal = this.data.settings.stepsGoal || 10000;
+                this.waterGoal = this.data.settings.waterGoal || 2000;
+                this.setupTabs();
+                this.setupPetClick();
+                this.setupStudyTimer();
+                this.setupSports();
+                this.setupNutrition();
+                this.setupEmotions();
+                this.setupMissions();
+                this.setupDiet();
+                this.setupTodo();
+                this.setupSleep();
+                this.setupWeight();
+                this.setupSteps();
+                this.renderAll();
+                this.checkAchievements();
+                this.updateAssistant();
+                this.updateGoalsProgress();
+                this.updateWeightScale();
+            },
+
+            save() {
+                DataManager.save(this.data);
+                this.renderAll();
+                this.checkAchievements();
+                this.updateAssistant();
+                this.updateGoalsProgress();
+                this.updateWeightScale();
+            },
+
+            addXp(amount, msg) {
+                this.data.pet.xp += amount;
+                const levels = [0, 500, 1500, 3000, 5000];
+                let newLevel = 1;
+                for (let i = levels.length - 1; i >= 0; i--) {
+                    if (this.data.pet.xp >= levels[i]) { newLevel = i + 1; break; }
+                }
+                if (newLevel > this.data.pet.level) {
+                    this.data.pet.level = newLevel;
+                    this.showNotification('🎉 Уровень повышен!');
+                }
+                this.showXpPopup(`+${amount}`);
+                this.save();
+            },
+
+            showXpPopup(text) {
+                const el = document.createElement('div');
+                el.className = 'xp-popup';
+                el.textContent = text;
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 1000);
+            },
+
+            showNotification(text, type = '') {
+                const el = document.createElement('div');
+                el.className = `notification ${type}`;
+                el.textContent = text;
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 2500);
+            },
+
+            unlockAchievement(id) {
+                if (!this.data.achievements.unlocked.includes(id)) {
+                    this.data.achievements.unlocked.push(id);
+                    this.showNotification('🏆 Достижение!', 'gold');
+                    this.addXp(20, '🏆');
+                    this.save();
+                }
+            },
+
+            // ========== ШАГИ ==========
+            setupSteps() {
+                document.getElementById('addSteps').addEventListener('click', () => {
+                    const steps = parseInt(document.getElementById('stepsCount').value) || 0;
+                    const calories = parseInt(document.getElementById('stepsCalories').value) || 0;
+                    if (steps <= 0 && calories <= 0) {
+                        this.showNotification('⚠️ Введи шаги или калории!');
+                        return;
+                    }
+                    const today = new Date().toISOString().split('T')[0];
+                    this.data.steps.history = this.data.steps.history.filter(e => e.date !== today);
+                    this.data.steps.history.push({ date: today, steps, calories });
+
+                    let totalSteps = 0,
+                        totalCal = 0;
+                    this.data.steps.history.forEach(e => { totalSteps += e.steps || 0;
+                        totalCal += e.calories || 0; });
+                    this.data.steps.totalSteps = totalSteps;
+                    this.data.steps.totalCalories = totalCal;
+                    this.data.sports.total.steps = totalSteps;
+                    this.data.sports.total.calories = (this.data.sports.total.calories || 0) + calories;
+
+                    if (!this.data.calendar[today] || this.data.calendar[today] === 'empty') {
+                        this.data.calendar[today] = steps >= 10000 ? 'good' : 'selfcare';
+                    }
+
+                    if (steps >= 10000) { this.addXp(15, '👣');
+                        this.showNotification('👣 10 000 шагов! +15 XP', 'success'); } else if (steps >= 5000) { this
+                            .addXp(8, '👣');
+                        this.showNotification('👣 5 000 шагов! +8 XP', 'success'); } else if (steps > 0) { this.addXp(3,
+                            '👣'); }
+                    if (calories > 0) this.addXp(Math.floor(calories / 50), '🔥');
+
+                    this.updateStreak();
+                    this.save();
+                    this.renderSteps();
+                    this.showNotification(`✅ ${steps} шагов, ${calories} ккал`);
+                });
+            },
+
+            renderSteps() {
+                const history = this.data.steps.history || [];
+                const list = document.getElementById('stepsHistoryList');
+                if (history.length === 0) {
+                    list.innerHTML = '<p class="text-muted">Нет записей</p>';
+                } else {
+                    list.innerHTML = history.slice().reverse().slice(0, 10).map(e =>
+                        `<div class="activity-item">
+                            <span>📅 ${e.date}</span>
+                            <span>👣 ${e.steps||0}</span>
+                            <span>🔥 ${e.calories||0}</span>
+                        </div>`
+                    ).join('');
+                }
+                document.getElementById('stepsTotal').textContent = this.data.steps.totalSteps || 0;
+                document.getElementById('stepsCaloriesTotal').textContent = this.data.steps.totalCalories || 0;
+
+                const today = new Date().toISOString().split('T')[0];
+                const todayEntry = history.find(e => e.date === today);
+                if (todayEntry) {
+                    document.getElementById('stepsCount').value = todayEntry.steps || 0;
+                    document.getElementById('stepsCalories').value = todayEntry.calories || 0;
+                }
+            },
+
+            // ========== АССИСТЕНТ ==========
+            updateAssistant() {
+                const today = new Date().toISOString().split('T')[0];
+                let totalCalories = 0;
+                let water = this.data.nutrition.today.water || 0;
+                let steps = this.data.sports.total.steps || 0;
+
+                const dietEntries = this.data.diet.entries || {};
+                for (const day in dietEntries) {
+                    dietEntries[day].forEach(m => { if (m.date === today) totalCalories += m.calories || 0; });
+                }
+                if (this.data.nutrition.today.calories) totalCalories += parseInt(this.data.nutrition.today.calories) || 0;
+
+                const left = Math.max(0, this.calorieGoal - totalCalories);
+                const percent = Math.min(100, (totalCalories / this.calorieGoal) * 100);
+
+                document.getElementById('assistCaloriesToday').textContent = totalCalories;
+                document.getElementById('assistCaloriesLeft').textContent = left;
+                document.getElementById('assistSteps').textContent = steps;
+                document.getElementById('assistWater').textContent = water;
+
+                const bar = document.getElementById('calorieBarFill');
+                bar.style.width = percent + '%';
+                bar.className = 'fill ' + (percent < 70 ? 'safe' : percent < 90 ? 'warning' : 'danger');
+
+                document.getElementById('calorieStatusLabel').textContent =
+                    percent < 70 ? '✨ Отлично!' : percent < 90 ? '⚠️ Почти лимит!' : '🔴 Лимит!';
+
+                let msg = '🧠 ';
+                if (totalCalories === 0) msg += `Цель: ${this.calorieGoal} ккал. `;
+                else if (left > 150) msg += `${totalCalories} ккал, осталось ${left}. `;
+                else if (left > 30) msg += `⚠️ Осталось ${left} ккал! `;
+                else msg += `🔴 Лимит! `;
+
+                const stepsPct = Math.round((steps / this.stepsGoal) * 100);
+                if (steps >= this.stepsGoal) msg += `👣 ${steps} шагов — цель! 🎉 `;
+                else if (steps > 0) msg += `👣 ${steps}/${this.stepsGoal} (${stepsPct}%) `;
+                else msg += `👣 Цель: ${this.stepsGoal} шагов. `;
+
+                const waterPct = Math.round((water / this.waterGoal) * 100);
+                if (water >= this.waterGoal) msg += '💧 Воды достаточно! ';
+                else if (water > 0) msg += `💧 ${water}/${this.waterGoal} мл (${waterPct}%) `;
+
+                const streak = this.data.streak.current;
+                if (streak > 0) msg += `🔥 ${streak} дней! `;
+                msg += `Уровень ${this.data.pet.level}. ❤️`;
+
+                document.getElementById('assistantMessage').innerHTML = msg;
+            },
+
+            updateGoalsProgress() {
+                const today = new Date().toISOString().split('T')[0];
+                let totalCalories = 0;
+                let steps = this.data.sports.total.steps || 0;
+                let water = this.data.nutrition.today.water || 0;
+
+                const dietEntries = this.data.diet.entries || {};
+                for (const day in dietEntries) {
+                    dietEntries[day].forEach(m => { if (m.date === today) totalCalories += m.calories || 0; });
+                }
+                if (this.data.nutrition.today.calories) totalCalories += parseInt(this.data.nutrition.today.calories) || 0;
+
+                document.getElementById('stepsProgress').textContent = `${steps} / ${this.stepsGoal}`;
+                document.getElementById('caloriesProgress').textContent = `${totalCalories} / ${this.calorieGoal}`;
+                document.getElementById('waterProgress').textContent = `${water} мл`;
+                document.getElementById('waterGoalDisplay').textContent = (this.waterGoal / 1000).toFixed(1);
+            },
+
+            // ========== ВЕС ==========
+            setupWeight() {
+                document.getElementById('saveWeight').addEventListener('click', () => {
+                    const current = parseFloat(document.getElementById('weightCurrent').value);
+                    const goal = parseFloat(document.getElementById('weightGoal').value);
+                    if (!current || !goal || current <= 0 || goal <= 0) {
+                        this.showNotification('⚠️ Введи вес!');
+                        return;
+                    }
+                    this.data.weight.current = current;
+                    this.data.weight.goal = goal;
+                    this.data.weight.lastUpdate = new Date().toISOString().split('T')[0];
+                    this.save();
+                    this.updateWeightScale();
+                    this.showNotification('⚖️ Вес сохранён!');
+                });
+            },
+
+            updateWeightScale() {
+                const current = this.data.weight.current || 63;
+                const goal = this.data.weight.goal || 55;
+                const diff = current - goal;
+
+                document.getElementById('weightStartLabel').textContent = current + ' кг';
+                document.getElementById('weightGoalLabel').textContent = goal + ' кг';
+
+                let progress = 0,
+                    daysLeft = 0;
+                if (diff > 0) {
+                    let totalDeficit = 0,
+                        days = 0;
+                    for (let d = 0; d < 7; d++) {
+                        const date = new Date();
+                        date.setDate(date.getDate() - d);
+                        const ds = date.toISOString().split('T')[0];
+                        let eaten = 0,
+                            burned = 0;
+                        for (const day in this.data.diet.entries) {
+                            this.data.diet.entries[day].forEach(m => { if (m.date === ds) eaten += m.calories || 0; });
+                        }
+                        this.data.nutrition.history.forEach(h => { if (h.date === ds) eaten += h.calories || 0; });
+                        this.data.sports.history.forEach(h => { if (h.date === ds) burned += h.calories || 0; });
+                        this.data.steps.history.forEach(h => { if (h.date === ds) burned += h.calories || 0; });
+                        if (eaten > 0) {
+                            totalDeficit += (1200 + burned) - eaten;
+                            days++;
+                        }
+                    }
+                    if (days > 0) {
+                        const avgDeficit = totalDeficit / days;
+                        const kgPerDay = avgDeficit / 7700;
+                        if (kgPerDay > 0) {
+                            daysLeft = Math.round(diff / kgPerDay);
+                            progress = Math.min(100, (kgPerDay * days / diff) * 100);
+                        }
+                    }
+                }
+
+                const fill = Math.min(100, Math.max(5, progress));
+                document.getElementById('weightFill').style.width = fill + '%';
+                document.getElementById('weightMarker').style.left = fill + '%';
+                document.getElementById('weightLeft').textContent = diff.toFixed(1) + ' кг';
+                document.getElementById('weightPercent').textContent = Math.round(fill) + '%';
+                document.getElementById('weightDays').textContent = daysLeft > 0 ? daysLeft + ' дн' : '—';
+
+                document.getElementById('weightCurrent').value = current;
+                document.getElementById('weightGoal').value = goal;
+            },
+
+            // ========== СОН ==========
+            setupSleep() {
+                document.getElementById('addSleep').addEventListener('click', () => {
+                    const time = document.getElementById('sleepTime').value;
+                    const hours = parseFloat(document.getElementById('sleepHours').value);
+                    if (!time || !hours || hours <= 0) {
+                        this.showNotification('⚠️ Заполни данные!');
+                        return;
+                    }
+                    const today = new Date().toISOString().split('T')[0];
+                    const hour = parseInt(time.split(':')[0]);
+                    const isGood = hour < 23 || (hour === 23 && parseInt(time.split(':')[1]) === 0);
+
+                    this.data.sleep.history = this.data.sleep.history.filter(e => e.date !== today);
+                    this.data.sleep.history.push({ date: today, time, hours, isGood });
+
+                    if (isGood) {
+                        this.data.sleep.goodDays = (this.data.sleep.goodDays || 0) + 1;
+                        let streak = 0,
+                            checkDate = new Date(today);
+                        const sorted = this.data.sleep.history.filter(e => e.isGood).sort((a, b) => new Date(b.date) - new Date(
+                            a.date));
+                        for (const e of sorted) {
+                            const d = new Date(e.date);
+                            const diffDays = Math.floor((checkDate - d) / (1000 * 60 * 60 * 24));
+                            if (diffDays === streak) { streak++; } else break;
+                        }
+                        this.data.sleep.streak = streak;
+                        this.addXp(10, '🌙');
+                        this.showNotification('🌙 До 23:00! +10 XP', 'success');
+                        if (streak >= 3) this.unlockAchievement('sleep_3');
+                        if (streak >= 7) this.unlockAchievement('sleep_7');
+                        if (streak >= 14) this.unlockAchievement('sleep_14');
+                        if (streak >= 30) this.unlockAchievement('sleep_30');
+                    } else {
+                        this.addXp(3, '🌙');
+                        this.showNotification('🌙 Сон записан');
+                    }
+
+                    if (!this.data.calendar[today] || this.data.calendar[today] === 'empty') {
+                        this.data.calendar[today] = isGood ? 'good' : 'selfcare';
+                    }
+                    this.updateStreak();
+                    this.save();
+                    this.renderSleep();
+                });
+            },
+
+            renderSleep() {
+                const history = this.data.sleep.history || [];
+                const list = document.getElementById('sleepHistoryList');
+                if (history.length === 0) {
+                    list.innerHTML = '<p class="text-muted">Нет записей</p>';
+                } else {
+                    list.innerHTML = history.slice().reverse().slice(0, 10).map(e =>
+                        `<div class="sleep-entry">
+                            <span>${e.date}</span>
+                            <span>${e.time} — ${e.hours}ч</span>
+                            <span class="sleep-badge ${e.isGood?'good':'bad'}">${e.isGood?'✅':'⚠️'}</span>
+                        </div>`
+                    ).join('');
+                }
+                document.getElementById('sleepGoodDays').textContent = this.data.sleep.goodDays || 0;
+                document.getElementById('sleepStreak').textContent = this.data.sleep.streak || 0;
+            },
+
+            // ========== ДОСТИЖЕНИЯ ==========
+            checkAchievements() {
+                const s = this.data.streak;
+                if (s.best >= 3) this.unlockAchievement('streak_3');
+                if (s.best >= 7) this.unlockAchievement('streak_7');
+                if (s.best >= 14) this.unlockAchievement('streak_14');
+                if (s.best >= 30) this.unlockAchievement('streak_30');
+
+                if (this.data.study.totalHours >= 10) this.unlockAchievement('study_10');
+                if (this.data.study.totalHours >= 50) this.unlockAchievement('study_50');
+                if (this.data.study.totalHours >= 100) this.unlockAchievement('study_100');
+
+                if (this.data.sports.history.length >= 10) this.unlockAchievement('sport_10');
+                if (this.data.sports.history.length >= 30) this.unlockAchievement('sport_30');
+
+                if (this.data.pet.xp >= 1000) this.unlockAchievement('xp_1000');
+                if (this.data.pet.xp >= 5000) this.unlockAchievement('xp_5000');
+
+                const totalBike = this.data.sports.total.bikeKm || 0;
+                if (totalBike >= 50) this.unlockAchievement('bike_50');
+                if (totalBike >= 200) this.unlockAchievement('bike_200');
+                if (totalBike >= 300) this.unlockAchievement('bike_300');
+                if (totalBike >= 500) this.unlockAchievement('bike_500');
+
+                const bikeSessions = this.data.sports.history.filter(h => h.type === 'bike');
+                if (bikeSessions.some(h => h.distance >= 50)) this.unlockAchievement('bike_50_once');
+
+                const dietEntries = this.data.diet.entries || {};
+                let daysNorm = 0;
+                for (const day in dietEntries) {
+                    let total = 0;
+                    dietEntries[day].forEach(m => total += m.calories || 0);
+                    if (total > 0 && total <= this.calorieGoal) daysNorm++;
+                }
+                if (daysNorm >= 5) this.unlockAchievement('calorie_control');
+                if (daysNorm >= 14) this.unlockAchievement('calorie_control_14');
+                if (daysNorm >= 30) this.unlockAchievement('calorie_control_30');
+
+                const totalSteps = this.data.steps.totalSteps || 0;
+                if (totalSteps >= 100000) this.unlockAchievement('steps_100k');
+                if (totalSteps >= 500000) this.unlockAchievement('steps_500k');
+
+                this.save();
+            },
+
+            renderAchievements() {
+                const all = [
+                    { id: 'streak_3', icon: '🔥', name: '3д' },
+                    { id: 'streak_7', icon: '🔥', name: '7д' },
+                    { id: 'streak_14', icon: '🌟', name: '14д' },
+                    { id: 'streak_30', icon: '👑', name: '30д' },
+                    { id: 'study_10', icon: '📚', name: '10ч' },
+                    { id: 'study_50', icon: '📚', name: '50ч' },
+                    { id: 'study_100', icon: '📚', name: '100ч' },
+                    { id: 'sport_10', icon: '🏋️', name: '10тр' },
+                    { id: 'sport_30', icon: '🏋️', name: '30тр' },
+                    { id: 'xp_1000', icon: '⭐', name: '1кXP' },
+                    { id: 'xp_5000', icon: '👑', name: '5кXP' },
+                    { id: 'bike_50', icon: '🚴', name: '50км' },
+                    { id: 'bike_200', icon: '🚴', name: '200км' },
+                    { id: 'bike_300', icon: '🚴', name: '300км' },
+                    { id: 'bike_500', icon: '🚴', name: '500км' },
+                    { id: 'bike_50_once', icon: '🚴', name: '50раз' },
+                    { id: 'calorie_control', icon: '🥗', name: '5дн' },
+                    { id: 'calorie_control_14', icon: '🥗', name: '14дн' },
+                    { id: 'calorie_control_30', icon: '🥗', name: '30дн' },
+                    { id: 'steps_100k', icon: '👣', name: '100k' },
+                    { id: 'steps_500k', icon: '👣', name: '500k' },
+                    { id: 'sleep_3', icon: '🌙', name: '3сн' },
+                    { id: 'sleep_7', icon: '🌙', name: '7сн' },
+                    { id: 'sleep_14', icon: '🌙', name: '14сн' },
+                    { id: 'sleep_30', icon: '🌙', name: '30сн' },
+                ];
+
+                const unlocked = this.data.achievements.unlocked || [];
+                const grid = document.getElementById('achievementsGrid');
+                grid.innerHTML = all.map(a =>
+                    `<div class="achievement-item ${unlocked.includes(a.id)?'unlocked':''}">
+                        <div class="icon">${a.icon}</div>
+                        <div class="name">${a.name}</div>
+                        ${unlocked.includes(a.id)?'<div style="font-size:8px;color:#FFD700;">✅</div>':'<div style="font-size:8px;color:#ccc;">🔒</div>'}
+                    </div>`
+                ).join('');
+            },
+
+            // ========== RENDER ALL ==========
+            renderAll() {
+                this.renderStatusBar();
+                this.renderPet();
+                this.renderCalendar();
+                this.renderStudy();
+                this.renderSports();
+                this.renderNutrition();
+                this.renderEmotions();
+                this.renderMissions();
+                this.renderAchievements();
+                this.renderStats();
+                this.renderDiet();
+                this.renderTodo();
+                this.renderSleep();
+                this.renderSteps();
+                this.updateAssistant();
+                this.updateGoalsProgress();
+                this.updateWeightScale();
+            },
+
+            renderStatusBar() {
+                const start = new Date(this.data.createdAt);
+                const days = Math.floor((new Date() - start) / (1000 * 60 * 60 * 24));
+                document.getElementById('daysLeft').textContent = Math.max(0, 90 - days);
+                document.getElementById('streakDisplay').textContent = this.data.streak.current;
+                document.getElementById('bestStreakDisplay').textContent = this.data.streak.best;
+                document.getElementById('levelDisplay').textContent = this.data.pet.level;
+            },
+
+            renderPet() {
+                const level = this.data.pet.level;
+                const emojis = ['🐣', '🐥', '🐱', '🐈', '👑'];
+                const moods = ['😊', '😊', '🙂', '😔', '😊'];
+                const moodText = this.data.pet.happiness > 80 ? moods[0] :
+                    this.data.pet.happiness > 60 ? moods[1] :
+                    this.data.pet.happiness > 40 ? moods[2] : moods[3];
+
+                document.getElementById('petAvatar').textContent = emojis[Math.min(level - 1, emojis.length - 1)];
+                document.getElementById('petMood').textContent = moodText;
+                document.getElementById('petHappiness').textContent = Math.round(this.data.pet.happiness);
+                document.getElementById('petEnergy').textContent = Math.round(this.data.pet.energy);
+                document.getElementById('petLevel').textContent = this.data.pet.level;
+
+                const levels = [0, 500, 1500, 3000, 5000];
+                const curXp = levels[this.data.pet.level - 1] || 0;
+                const nextXp = levels[this.data.pet.level] || 5000;
+                const pct = Math.min(100, ((this.data.pet.xp - curXp) / (nextXp - curXp)) * 100);
+                document.getElementById('petXpBar').style.width = pct + '%';
+                document.getElementById('petXpText').textContent = this.data.pet.xp;
+                document.getElementById('petMaxXpText').textContent = nextXp;
+            },
+
+            renderCalendar() {
+                const now = new Date();
+                const month = now.getMonth(),
+                    year = now.getFullYear();
+                const monthNames = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
+                document.getElementById('calendarMonth').textContent = monthNames[month] + ' ' + year;
+
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const today = new Date().toISOString().split('T')[0];
+
+                let html = '';
+                for (let i = 0; i < (firstDay === 0 ? 6 : firstDay - 1); i++) html +=
+                `<div class="calendar-day empty"></div>`;
+
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const ds = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+                    const dayData = this.data.calendar[ds] || 'empty';
+                    const isToday = ds === today;
+                    let cls = 'calendar-day';
+                    if (dayData === 'perfect') cls += ' perfect';
+                    else if (dayData === 'good') cls += ' good';
+                    else if (dayData === 'selfcare') cls += ' selfcare';
+                    else if (dayData === 'best') cls += ' best';
+                    else if (dayData === 'missed') cls += ' missed';
+                    else cls += ' empty';
+                    if (isToday) cls += ' today';
+                    html += `<div class="${cls}">${d}</div>`;
+                }
+                document.getElementById('calendarGrid').innerHTML = html;
+            },
+
+            renderStudy() {
+                const s = this.data.study.todayTimer.totalSeconds;
+                document.getElementById('studyTodayHours').textContent = (s / 3600).toFixed(1);
+                document.getElementById('studyTodayTasks').textContent = this.data.study.todayTasks;
+                document.getElementById('studyTodayXp').textContent = this.data.study.todayXp || 0;
+                document.getElementById('studyTotalHours').textContent = this.data.study.totalHours.toFixed(1);
+            },
+
+            renderSports() {
+                const history = this.data.sports.history;
+                const list = document.getElementById('sportHistoryList');
+                if (history.length === 0) {
+                    list.innerHTML = '<p class="text-muted">Нет активностей</p>';
+                } else {
+                    list.innerHTML = history.slice().reverse().slice(0, 10).map(h =>
+                        `<div class="activity-item">
+                            <span>${h.emoji||'🏃'} ${h.type} — ${h.duration}мин</span>
+                            <span>📅 ${h.date}</span>
+                            <span>+${h.xpGained||0}</span>
+                        </div>`
+                    ).join('');
+                }
+
+                const total = this.data.sports.total;
+                document.getElementById('sportTotalBike').textContent = total.bikeKm || 0;
+                document.getElementById('sportTotalCalories').textContent = total.calories || 0;
+            },
+
+            renderNutrition() {
+                const t = this.data.nutrition.today;
+                document.getElementById('mealBreakfast').value = t.breakfast || '';
+                document.getElementById('mealLunch').value = t.lunch || '';
+                document.getElementById('mealDinner').value = t.dinner || '';
+                document.getElementById('mealCalories').value = t.calories || 0;
+                document.getElementById('mealWater').value = t.water || 0;
+
+                const complete = t.breakfast && t.lunch && t.dinner;
+                document.getElementById('nutritionStatusText').textContent = complete ? '💚 Выполнен!' : '—';
+
+                const history = this.data.nutrition.history;
+                const list = document.getElementById('nutritionHistoryList');
+                if (history.length === 0) {
+                    list.innerHTML = '<p class="text-muted">Нет записей</p>';
+                } else {
+                    list.innerHTML = history.slice().reverse().slice(0, 5).map(h =>
+                        `<div class="activity-item">
+                            <span>📅 ${h.date}: ${h.breakfast||'-'} / ${h.lunch||'-'} / ${h.dinner||'-'}</span>
+                            <span>${h.calories||0} ккал</span>
+                        </div>`
+                    ).join('');
+                }
+            },
+
+            renderEmotions() {
+                const stats = this.data.emotions.stats;
+                const grid = document.getElementById('moodStatsGrid');
+                const labels = { great: '😊', normal: '🙂', sad: '😔', tired: '😫', proud: '🔥' };
+                grid.innerHTML = Object.entries(stats).map(([k, v]) =>
+                    `<div class="stat-number"><div class="number">${v}</div><div class="label">${labels[k]||k}</div></div>`
+                ).join('');
+
+                const today = new Date().toISOString().split('T')[0];
+                const entry = this.data.emotions.entries.find(e => e.date === today);
+                document.querySelectorAll('.mood-option').forEach(el => {
+                    el.classList.toggle('active', el.dataset.mood === entry?.mood);
+                });
+                document.getElementById('moodNote').value = entry?.note || '';
+            },
+
+            renderMissions() {
+                const container = document.getElementById('missionContainer');
+                const tasks = this.data.missions.tasks || [];
+
+                let html =
+                    `<div style="display:flex;gap:4px;margin-bottom:6px;"><input type="text" id="missionInput" placeholder="Цель" style="flex:1;padding:4px 8px;border:2px solid #EEE;border-radius:8px;font-size:11px;" /><button class="btn btn-primary" id="missionAdd">➕</button></div>`;
+
+                if (tasks.length === 0) {
+                    html += `<p class="text-muted">Добавь цели</p>`;
+                } else {
+                    tasks.forEach((t, i) => {
+                        const done = t.done ? 'done' : '';
+                        html +=
+                            `<div class="mission-item ${done}"><input type="checkbox" ${t.done?'checked':''} data-mission="${i}" /><span>${t.text}</span><button class="mission-delete" data-mission-del="${i}">✖</button></div>`;
+                    });
+                }
+                container.innerHTML = html;
+
+                document.getElementById('missionAdd')?.addEventListener('click', () => {
+                    const input = document.getElementById('missionInput');
+                    const text = input.value.trim();
+                    if (!text) { this.showNotification('⚠️ Напиши цель!'); return; }
+                    this.data.missions.tasks.push({ text, done: false });
+                    this.save();
+                    this.renderMissions();
+                    input.value = '';
+                });
+
+                document.getElementById('missionInput')?.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') document.getElementById('missionAdd')?.click();
+                });
+
+                container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                    cb.addEventListener('change', (e) => {
+                        const idx = parseInt(e.target.dataset.mission);
+                        this.data.missions.tasks[idx].done = e.target.checked;
+                        if (e.target.checked) {
+                            this.addXp(3, '🎯');
+                            this.showNotification('🎯 Цель выполнена! +3 XP');
+                        }
+                        this.save();
+                        this.renderMissions();
+                        this.checkChest();
+                    });
+                });
+
+                container.querySelectorAll('.mission-delete').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const idx = parseInt(btn.dataset.missionDel);
+                        this.data.missions.tasks.splice(idx, 1);
+                        this.save();
+                        this.renderMissions();
+                    });
+                });
+
+                this.checkChest();
+            },
+
+            checkChest() {
+                const tasks = this.data.missions.tasks || [];
+                const allDone = tasks.length > 0 && tasks.every(t => t.done);
+                const opened = this.data.missions.chestOpened;
+
+                const icon = document.getElementById('chestIcon');
+                const status = document.getElementById('chestStatus');
+
+                if (allDone && !opened) {
+                    icon.textContent = '🎁';
+                    status.textContent = '✨ Нажми!';
+                    icon.style.cursor = 'pointer';
+                    icon.onclick = () => this.openChest();
+                } else if (opened) {
+                    icon.textContent = '✨';
+                    status.textContent = '🎉 Открыт!';
+                    icon.style.cursor = 'default';
+                    icon.onclick = null;
+                } else {
+                    icon.textContent = '📦';
+                    status.textContent = 'Выполни все цели!';
+                    icon.style.cursor = 'default';
+                    icon.onclick = null;
+                }
+            },
+
+            openChest() {
+                if (this.data.missions.chestOpened) return;
+                this.data.missions.chestOpened = true;
+                this.addXp(30, '🎁');
+                this.showNotification('🎉 Сундук открыт! +30 XP', 'gold');
+                this.save();
+                this.renderMissions();
+            },
+
+            renderStats() {
+                document.getElementById('statStreak').textContent = this.data.streak.best;
+                document.getElementById('statStudyHours').textContent = this.data.study.totalHours.toFixed(1);
+                document.getElementById('statTasks').textContent = this.data.study.tasksSolved;
+                document.getElementById('statBike').textContent = this.data.sports.total.bikeKm || 0;
+                document.getElementById('statXp').textContent = this.data.pet.xp;
+                document.getElementById('statStepsTotal').textContent = this.data.steps.totalSteps || 0;
+            },
+
+            // ========== TO-DO ==========
+            setupTodo() {
+                document.getElementById('todoAdd').addEventListener('click', () => this.addTodo());
+                document.getElementById('todoInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.addTodo();
+                });
+            },
+
+            addTodo() {
+                const input = document.getElementById('todoInput');
+                const text = input.value.trim();
+                if (!text) { this.showNotification('⚠️ Напиши план!'); return; }
+                const today = new Date().toISOString().split('T')[0];
+                if (!this.data.todo[today]) this.data.todo[today] = [];
+                this.data.todo[today].push({ id: Date.now(), text, done: false });
+                input.value = '';
+                this.save();
+                this.renderTodo();
+                this.showNotification('✅ План добавлен!');
+            },
+
+            renderTodo() {
+                const today = new Date().toISOString().split('T')[0];
+                const todos = this.data.todo[today] || [];
+                const list = document.getElementById('todoList');
+
+                if (todos.length === 0) {
+                    list.innerHTML = '<p class="text-muted">Нет планов</p>';
+                } else {
+                    list.innerHTML = todos.map((t, i) =>
+                        `<div class="todo-item ${t.done?'done':''}">
+                            <input type="checkbox" ${t.done?'checked':''} data-todo="${i}" />
+                            <span class="todo-text">${t.text}</span>
+                            <button class="todo-delete" data-todo-del="${i}">✖</button>
+                        </div>`
+                    ).join('');
+
+                    list.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                        cb.addEventListener('change', (e) => {
+                            const idx = parseInt(e.target.dataset.todo);
+                            this.data.todo[today][idx].done = e.target.checked;
+                            if (e.target.checked) {
+                                this.addXp(2, '✅');
+                                this.showNotification('✅ План выполнен! +2 XP');
+                            }
+                            this.save();
+                            this.renderTodo();
+                        });
+                    });
+
+                    list.querySelectorAll('.todo-delete').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            const idx = parseInt(btn.dataset.todoDel);
+                            this.data.todo[today].splice(idx, 1);
+                            this.save();
+                            this.renderTodo();
+                        });
+                    });
+                }
+
+                const total = todos.length,
+                    done = todos.filter(t => t.done).length;
+                document.getElementById('todoDoneCount').textContent = done;
+                document.getElementById('todoTotalCount').textContent = total;
+            },
+
+            // ========== ДИЕТА ==========
+            setupDiet() {
+                document.querySelectorAll('.day-tab').forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        this.renderDiet();
+                    });
+                });
+
+                document.getElementById('dietPhotoUpload').addEventListener('click', () => {
+                    document.getElementById('dietPhotoInput').click();
+                });
+
+                document.getElementById('dietPhotoInput').addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (ev) => {
+                            document.getElementById('dietPhotoPreviewImg').src = ev.target.result;
+                            document.getElementById('dietPhotoPreview').style.display = 'block';
+                            document.getElementById('dietPhotoUpload').style.display = 'none';
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+
+                document.getElementById('dietPhotoRemove').addEventListener('click', () => {
+                    document.getElementById('dietPhotoPreview').style.display = 'none';
+                    document.getElementById('dietPhotoUpload').style.display = 'block';
+                    document.getElementById('dietPhotoInput').value = '';
+                });
+
+                document.getElementById('dietAddMeal').addEventListener('click', () => {
+                    const activeDayTab = document.querySelector('.day-tab.active');
+                    const day = activeDayTab.dataset.day;
+
+                    const mealType = document.getElementById('dietMealType').value;
+                    const name = document.getElementById('dietMealName').value.trim();
+                    const calories = parseInt(document.getElementById('dietMealCalories').value) || 0;
+                    const macros = document.getElementById('dietMealMacros').value.trim();
+                    const note = document.getElementById('dietMealNote').value.trim();
+                    const photo = document.getElementById('dietPhotoPreviewImg').src || '';
+
+                    if (!name) { this.showNotification('⚠️ Название!'); return; }
+
+                    const today = new Date().toISOString().split('T')[0];
+                    const meal = { id: Date.now(), date: today, mealType, name, calories, macros, note, photo };
+
+                    if (!this.data.diet.entries[day]) this.data.diet.entries[day] = [];
+                    this.data.diet.entries[day].push(meal);
+                    if (!this.data.diet.allHistory) this.data.diet.allHistory = [];
+                    this.data.diet.allHistory.push(meal);
+
+                    if (!this.data.calendar[today] || this.data.calendar[today] === 'empty') {
+                        this.data.calendar[today] = 'good';
+                    }
+
+                    const mealsToday = this.data.diet.entries[day].filter(m => m.date === today);
+                    if (mealsToday.length === 1) this.addXp(5, '🍽');
+                    else if (mealsToday.length >= 3) this.addXp(10, '🍽');
+
+                    this.updateStreak();
+
+                    document.getElementById('dietMealName').value = '';
+                    document.getElementById('dietMealCalories').value = '0';
+                    document.getElementById('dietMealMacros').value = '';
+                    document.getElementById('dietMealNote').value = '';
+                    document.getElementById('dietPhotoPreview').style.display = 'none';
+                    document.getElementById('dietPhotoUpload').style.display = 'block';
+                    document.getElementById('dietPhotoInput').value = '';
+
+                    this.save();
+                    this.showNotification(`✅ ${name} (${calories} ккал)`);
+                });
+            },
+
+            renderDiet() {
+                const activeDayTab = document.querySelector('.day-tab.active');
+                const day = activeDayTab ? activeDayTab.dataset.day : 'monday';
+                const entries = this.data.diet.entries[day] || [];
+
+                const container = document.getElementById('dietDayContent');
+                if (entries.length === 0) {
+                    container.innerHTML = '<p class="text-muted">Нет записей</p>';
+                } else {
+                    const dayNames = { monday: 'Пн', tuesday: 'Вт', wednesday: 'Ср', thursday: 'Чт', friday: 'Пт',
+                        saturday: 'Сб', sunday: 'Вс' };
+                    const mealLabels = { breakfast: '🍳 Завтрак', lunch: '🥗 Обед', dinner: '🍲 Ужин', snack: '🍿 Перекус' };
+
+                    let totalCal = 0;
+                    let html = `<p style="font-weight:500;font-size:12px;">📅 ${dayNames[day]}</p>`;
+
+                    const order = ['breakfast', 'lunch', 'dinner', 'snack'];
+                    const sorted = [...entries].sort((a, b) => order.indexOf(a.mealType) - order.indexOf(b.mealType));
+
+                    sorted.forEach((meal, idx) => {
+                        totalCal += meal.calories || 0;
+                        html += `
+                            <div class="meal-entry">
+                                ${meal.photo ? `<img class="meal-photo" src="${meal.photo}" />` : `<div class="meal-photo" style="background:#F5F5F5;display:flex;align-items:center;justify-content:center;font-size:16px;">📷</div>`}
+                                <div class="meal-info">
+                                    <div class="meal-header">
+                                        <span class="meal-time">${mealLabels[meal.mealType]||meal.mealType}</span>
+                                        <span style="font-weight:600;">${meal.calories||0} ккал</span>
+                                    </div>
+                                    <div class="meal-name">${meal.name}</div>
+                                    ${meal.macros ? `<div class="meal-desc">Б/Ж/У: ${meal.macros}</div>` : ''}
+                                    ${meal.note ? `<div class="meal-desc">📝 ${meal.note}</div>` : ''}
+                                    <div class="meal-meta">
+                                        <button class="btn btn-danger" data-delete-meal="${day}-${idx}" style="padding:1px 6px;font-size:9px;">🗑</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    html +=
+                        `<div class="flex-between mt-8 text-muted"><span>🔥 ${totalCal} / ${this.calorieGoal} ккал</span><span>🍽 ${entries.length}</span></div>`;
+                    container.innerHTML = html;
+
+                    container.querySelectorAll('[data-delete-meal]').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            const [dayKey, idx] = btn.dataset.deleteMeal.split('-');
+                            if (confirm('Удалить?')) {
+                                this.data.diet.entries[dayKey].splice(parseInt(idx), 1);
+                                this.save();
+                                this.renderDiet();
+                                this.updateAssistant();
+                            }
+                        });
+                    });
+                }
+
+                const history = this.data.diet.allHistory || [];
+                const histContainer = document.getElementById('dietHistory');
+                if (history.length === 0) {
+                    histContainer.innerHTML = '<p class="text-muted">Нет записей</p>';
+                } else {
+                    const sorted = [...history].reverse().slice(0, 12);
+                    const labels = { breakfast: 'Завтрак', lunch: 'Обед', dinner: 'Ужин', snack: 'Перекус' };
+                    histContainer.innerHTML = sorted.map(m =>
+                        `<div class="food-history-item">
+                            ${m.photo ? `<img src="${m.photo}" />` : `<div style="height:50px;background:#F5F5F5;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:18px;">📷</div>`}
+                            <div style="font-weight:600;font-size:10px;">${m.name}</div>
+                            <div style="font-size:9px;">${m.calories||0} ккал</div>
+                            <div class="date">${m.date}</div>
+                        </div>`
+                    ).join('');
+                }
+            },
+
+            // ========== СПОРТ ==========
+            setupSports() {
+                document.getElementById('addSport').addEventListener('click', () => {
+                    const type = document.getElementById('sportType').value;
+                    const duration = parseInt(document.getElementById('sportDuration').value) || 0;
+                    const distance = parseFloat(document.getElementById('sportDistance').value) || 0;
+                    const calories = parseInt(document.getElementById('sportCalories').value) || 0;
+
+                    if (duration <= 0) { this.showNotification('⚠️ Длительность!'); return; }
+
+                    let xp = Math.floor(duration / 10) * 5;
+                    if (distance > 0) xp += Math.floor(distance * 2);
+                    if (calories > 0) xp += Math.floor(calories / 50);
+                    if (xp < 5) xp = 5;
+
+                    const today = new Date().toISOString().split('T')[0];
+                    const entry = {
+                        date: today,
+                        type,
+                        duration,
+                        distance,
+                        calories,
+                        xpGained: xp,
+                        emoji: { bike: '🚴', training: '🏋️', walk: '🚶', run: '🏃' } [type] || '🏃'
+                    };
+
+                    this.data.sports.history.push(entry);
+
+                    const total = this.data.sports.total;
+                    if (type === 'bike') total.bikeKm = (total.bikeKm || 0) + distance;
+                    if (type === 'walk') total.steps = (total.steps || 0) + Math.round(distance * 1300);
+                    if (type === 'run') total.steps = (total.steps || 0) + Math.round(distance * 1500);
+                    total.calories = (total.calories || 0) + calories;
+
+                    if (!this.data.calendar[today] || this.data.calendar[today] === 'empty') {
+                        this.data.calendar[today] = 'good';
+                    }
+
+                    if (type === 'bike') {
+                        const totalBike = this.data.sports.total.bikeKm || 0;
+                        if (totalBike >= 50) this.unlockAchievement('bike_50');
+                        if (totalBike >= 200) this.unlockAchievement('bike_200');
+                        if (totalBike >= 300) this.unlockAchievement('bike_300');
+                        if (totalBike >= 500) this.unlockAchievement('bike_500');
+                        const bikeSessions = this.data.sports.history.filter(h => h.type === 'bike');
+                        if (bikeSessions.some(h => h.distance >= 50)) this.unlockAchievement('bike_50_once');
+                    }
+
+                    this.addXp(xp, '💪');
+                    this.updateStreak();
+                    this.save();
+                    this.showNotification(`💪 +${xp} XP`);
+                });
+            },
+
+            // ========== ПИТАНИЕ ==========
+            setupNutrition() {
+                document.getElementById('saveMeals').addEventListener('click', () => {
+                    const breakfast = document.getElementById('mealBreakfast').value.trim();
+                    const lunch = document.getElementById('mealLunch').value.trim();
+                    const dinner = document.getElementById('mealDinner').value.trim();
+                    const calories = parseInt(document.getElementById('mealCalories').value) || 0;
+                    const water = parseInt(document.getElementById('mealWater').value) || 0;
+
+                    const today = new Date().toISOString().split('T')[0];
+                    this.data.nutrition.today = { breakfast, lunch, dinner, calories, water };
+                    this.data.nutrition.history.push({ date: today, breakfast, lunch, dinner, calories, water, xpGained: 10 });
+
+                    if (!this.data.calendar[today] || this.data.calendar[today] === 'empty') {
+                        this.data.calendar[today] = 'good';
+                    }
+                    if (breakfast && lunch && dinner) this.addXp(10, '🍽');
+                    if (water >= this.waterGoal) this.addXp(5, '💧');
+
+                    this.updateStreak();
+                    this.save();
+                    this.showNotification('✅ Питание сохранено!');
+                });
+            },
+
+            // ========== ЭМОЦИИ ==========
+            setupEmotions() {
+                document.querySelectorAll('.mood-option').forEach(el => {
+                    el.addEventListener('click', () => {
+                        document.querySelectorAll('.mood-option').forEach(e => e.classList.remove('active'));
+                        el.classList.add('active');
+                    });
+                });
+
+                document.getElementById('saveMood').addEventListener('click', () => {
+                    const active = document.querySelector('.mood-option.active');
+                    if (!active) { this.showNotification('⚠️ Выбери настроение!'); return; }
+
+                    const mood = active.dataset.mood;
+                    const note = document.getElementById('moodNote').value.trim();
+                    const today = new Date().toISOString().split('T')[0];
+
+                    this.data.emotions.entries = this.data.emotions.entries.filter(e => e.date !== today);
+                    this.data.emotions.entries.push({ date: today, mood, note });
+                    this.data.emotions.stats[mood] = (this.data.emotions.stats[mood] || 0) + 1;
+
+                    if (!this.data.calendar[today] || this.data.calendar[today] === 'empty') {
+                        this.data.calendar[today] = 'selfcare';
+                    }
+
+                    this.addXp(5, '💭');
+                    this.updateStreak();
+                    this.save();
+                    this.showNotification('💭 Настроение сохранено!');
+                });
+            },
+
+            setupMissions() {},
+
+            // ========== УЧЁБА ==========
+            setupStudyTimer() {
+                const display = document.getElementById('timerDisplay');
+                const startBtn = document.getElementById('timerStart');
+                const pauseBtn = document.getElementById('timerPause');
+                const stopBtn = document.getElementById('timerStop');
+                let interval = null;
+
+                const update = () => {
+                    const s = this.data.study.todayTimer.totalSeconds;
+                    display.textContent =
+                        `${String(Math.floor(s/3600)).padStart(2,'0')}:${String(Math.floor((s%3600)/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+                };
+
+                startBtn.addEventListener('click', () => {
+                    if (this.data.study.todayTimer.isRunning) return;
+                    this.data.study.todayTimer.isRunning = true;
+                    this.save();
+                    startBtn.disabled = true;
+                    pauseBtn.disabled = false;
+                    stopBtn.disabled = false;
+                    if (interval) clearInterval(interval);
+                    interval = setInterval(() => {
+                        if (this.data.study.todayTimer.isRunning) {
+                            this.data.study.todayTimer.totalSeconds++;
+                            this.save();
+                            update();
+                        }
+                    }, 1000);
+                });
+
+                pauseBtn.addEventListener('click', () => {
+                    this.data.study.todayTimer.isRunning = false;
+                    this.save();
+                    startBtn.disabled = false;
+                    pauseBtn.disabled = true;
+                    if (interval) { clearInterval(interval);
+                        interval = null; }
+                });
+
+                stopBtn.addEventListener('click', () => {
+                    const seconds = this.data.study.todayTimer.totalSeconds;
+                    if (seconds > 0) {
+                        const hours = seconds / 3600;
+                        let xp = 0;
+                        if (hours >= 2) xp = 50;
+                        else if (hours >= 1) xp = 25;
+                        else if (hours >= 0.5) xp = 10;
+                        else if (seconds >= 60) xp = 5;
+
+                        this.data.study.totalHours += hours;
+                        this.data.study.todayXp = (this.data.study.todayXp || 0) + xp;
+
+                        const tasks = parseInt(document.getElementById('studyTasks').value) || 0;
+                        this.data.study.todayTasks += tasks;
+                        this.data.study.tasksSolved += tasks;
+
+                        const subject = document.getElementById('studySubject').value;
+                        if (!this.data.study.subjects[subject]) this.data.study.subjects[subject] = { hours: 0,
+                            tasks: 0 };
+                        this.data.study.subjects[subject].hours += hours;
+                        this.data.study.subjects[subject].tasks += tasks;
+
+                        this.data.study.sessions.push({
+                            date: new Date().toISOString().split('T')[0],
+                            hours,
+                            tasks,
+                            xpGained: xp,
+                            subject
+                        });
+
+                        const today = new Date().toISOString().split('T')[0];
+                        if (!this.data.calendar[today] || this.data.calendar[today] === 'empty') {
+                            this.data.calendar[today] = 'good';
+                        }
+
+                        this.addXp(xp, '📚');
+                        this.updateStreak();
+                        this.showNotification(`📚 +${xp} XP`);
+                    }
+
+                    this.data.study.todayTimer.isRunning = false;
+                    this.data.study.todayTimer.totalSeconds = 0;
+                    this.save();
+                    startBtn.disabled = false;
+                    pauseBtn.disabled = true;
+                    stopBtn.disabled = true;
+                    if (interval) { clearInterval(interval);
+                        interval = null; }
+                    update();
+                    this.renderAll();
+                });
+
+                update();
+            },
+
+            // ========== ТАБЫ ==========
+            setupTabs() {
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+                        document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+                    });
+                });
+            },
+
+            setupPetClick() {
+                document.getElementById('petAvatar').addEventListener('click', () => {
+                    this.data.pet.happiness = Math.min(100, this.data.pet.happiness + 2);
+                    this.showNotification('❤️ +2 счастья');
+                    this.save();
+                });
+            },
+
+            updateStreak() {
+                const today = new Date().toISOString().split('T')[0];
+                const lastDate = this.data.streak.lastDate;
+                if (lastDate === today) return;
+
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+                if (lastDate === yesterdayStr || lastDate === null) {
+                    this.data.streak.current++;
+                    if (this.data.streak.current > this.data.streak.best) {
+                        this.data.streak.best = this.data.streak.current;
+                    }
+                    this.data.streak.totalProductiveDays++;
+                } else if (lastDate !== today) {
+                    this.data.streak.current = 1;
+                    this.data.streak.totalProductiveDays++;
+                }
+                this.data.streak.lastDate = today;
+                this.save();
+
+                if ([7, 14, 30, 60].includes(this.data.streak.current)) {
+                    this.showNotification(`🔥🔥🔥 ${this.data.streak.current} дней!`);
+                }
+            },
+
+            autoUpdate() {
+                const today = new Date().toISOString().split('T')[0];
+                if (this.data.streak.lastDate !== today) {
+                    this.data = DataManager.get();
+                    this.renderAll();
+                    this.updateAssistant();
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            App.init();
+            setInterval(() => App.autoUpdate(), 60000);
+        });
+    </script>
+
+</body>
+</html>
